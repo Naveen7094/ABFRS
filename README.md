@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html>
 <head>
     <title>AI Fertilizer Recommendation System</title>
@@ -6,7 +6,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: url("https://images.unsplash.com/photo-1464226184884-fa280b87c399") no-repeat center center/cover;
+            background: url("https://images.unsplash.com/photo-1500382017468-9049fed747ef") no-repeat center center/cover;
             height: 100vh;
         }
 
@@ -14,7 +14,7 @@
             width: 400px;
             margin: 80px auto;
             padding: 30px;
-            background: rgba(255,255,255,0.95);
+            background: rgba(255,255,255,0.9);
             border-radius: 10px;
             box-shadow: 0px 0px 10px gray;
         }
@@ -52,8 +52,9 @@
             font-weight: bold;
         }
 
-        .logout-btn {
-            background-color: red;
+        img {
+            width: 100%;
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -62,12 +63,12 @@
 <!-- LOGIN PAGE -->
 <div class="container" id="loginPage">
     <h2>Login</h2>
-    <input type="text" id="username" placeholder="Enter Username">
-    <input type="password" id="password" placeholder="Enter Password">
+    <input type="text" id="username" placeholder="Enter Username" required>
+    <input type="password" id="password" placeholder="Enter Password" required>
     <button onclick="login()">Login</button>
 </div>
 
-<!-- HOME PAGE -->
+<!-- RECOMMENDATION PAGE -->
 <div class="container hidden" id="homePage">
     <h2>Fertilizer Recommendation</h2>
 
@@ -95,7 +96,6 @@
     <input type="number" id="potassium" placeholder="Potassium Level (K)">
 
     <button onclick="recommend()">Get Recommendation</button>
-    <button class="logout-btn" onclick="logout()">Logout</button>
 </div>
 
 <!-- RESULT PAGE -->
@@ -104,57 +104,23 @@
     <div class="result-box" id="resultText"></div>
     <br>
     <button onclick="goBack()">Back</button>
-    <button class="logout-btn" onclick="logout()">Logout</button>
 </div>
 
 <script>
-
-// Check login status when page loads
-window.onload = function() {
-    if(localStorage.getItem("loggedIn") === "true") {
-        showHome();
-    } else {
-        showLogin();
-    }
-}
 
 function login() {
     var user = document.getElementById("username").value;
     var pass = document.getElementById("password").value;
 
-    if(user === "admin" && pass === "1234") {
-        localStorage.setItem("loggedIn", "true");
-        showHome();
+    if(user === "naveen" && pass === "1234") {
+        document.getElementById("loginPage").classList.add("hidden");
+        document.getElementById("homePage").classList.remove("hidden");
     } else {
         alert("Invalid Login!");
     }
 }
 
-function logout() {
-    localStorage.removeItem("loggedIn");
-    showLogin();
-}
-
-function showLogin() {
-    document.getElementById("loginPage").classList.remove("hidden");
-    document.getElementById("homePage").classList.add("hidden");
-    document.getElementById("resultPage").classList.add("hidden");
-}
-
-function showHome() {
-    document.getElementById("loginPage").classList.add("hidden");
-    document.getElementById("homePage").classList.remove("hidden");
-    document.getElementById("resultPage").classList.add("hidden");
-}
-
 function recommend() {
-
-    if(localStorage.getItem("loggedIn") !== "true") {
-        alert("Please login first!");
-        showLogin();
-        return;
-    }
-
     var n = parseInt(document.getElementById("nitrogen").value);
     var p = parseInt(document.getElementById("phosphorus").value);
     var k = parseInt(document.getElementById("potassium").value);
@@ -175,11 +141,12 @@ function recommend() {
     document.getElementById("homePage").classList.add("hidden");
     document.getElementById("resultPage").classList.remove("hidden");
     document.getElementById("resultText").innerHTML =
-        "Crop: " + crop + "<br><br>Recommended Fertilizer:<br>" + fertilizer;
+        "Crop: " + crop + "<br><br>Recommended Fertilizer: <br>" + fertilizer;
 }
 
 function goBack() {
-    showHome();
+    document.getElementById("resultPage").classList.add("hidden");
+    document.getElementById("homePage").classList.remove("hidden");
 }
 
 </script>
